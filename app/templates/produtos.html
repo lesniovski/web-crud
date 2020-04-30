@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for item in error %}
+<p>{{ item }}</p>
+{% endfor %}
+<table>
+   <center>
+      <h1>Cadastro</h1>
+      {% if produto %}
+      {% for item in produto %}
+      <form action="/produto/" method="post">{% csrf_token %}
+         <input type="number" name="id" value="{{ item.id }}" hidden>
+         <input type="text" name="cod" value="{{ item.cod }}" required>
+         <input type="text" name="nome" value="{{ item.nome }}" required>
+         <input type="text" name="unidMedida" value="{{ item.unidMedida }}" required>
+         <input type="text" name="preco" value="{{ item.preco }}" required>
+         <input type="submit" name="enviar" value="Salvar">
+      </form>
+      {% endfor %}
+      {% else %}
+      <form action="/produto/" method="post">{% csrf_token %}
+         <input type="number" name="id" value="-1" hidden>
+         <input type="text" name="cod" placeholder="Código" required>
+         <input type="text" name="nome" placeholder="Nome Produto" required>
+         <input type="text" name="unidMedida" placeholder="Unidade de Medida" required>
+         <input type="text" name="preco" placeholder="Preco" required>
+         <input type="submit" name="enviar" value="Salvar">
+      </form>
+      {% endif %}
+
+
+   </center>
+</table>
+
+<br>
+<hr /><br><br>
+<ul>
+   <center>
+   <table border="1">
+      <p>Produtos cadastrados</p>
+      {% for item in list %}
+      <tr>
+         <td><b>Cod:</b> {{ item.cod }}</td>
+         <td><b>Nome:</b> {{ item.nome }}</td>
+         <td><b>Unidade Medida:</b> {{ item.unidMedida }}</td>
+         <td><b>Preço:</b> {{ item.preco }}</td>
+         <td><a href="/produto/?id={{ item.id }}&op=del">Deletar</a></td>
+         <td><a href="/produto/?id={{ item.id }}&op=update">Alterar</a></td>
+      </tr>
+      {% endfor %}
+
+   </table>
+</center>
+</ul>
+{% endblock content %}
